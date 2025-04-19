@@ -11,25 +11,20 @@ conn, addr = server.accept()
 
 print(f"Connected by {addr}")
 
-isRunning = True
-while isRunning:
-    data = conn.recv(1024).decode("utf-8")
+while True:
+    request = conn.recv(1024).decode("utf-8")
 
-    if data == "bye" or data == "quit":
+    if request == "bye" or request == "quit":
         print("Bye!")
-        isRunning = False
+        break
 
-    print("Message from client: ", data)
-
-    #data = conn.recv(1024).decode()
-    #if not data or data.lower() == 'bye':
-    #    print("Client disconnected.")
-    #    break
-    #print("Client:", data)
-    #reply = input("You: ")
-    #conn.sendall(reply.encode())
-    #if reply.lower() == 'bye':
-    #    break
+    print("Message from client: ", request)
+    
+    reply = input("Enter your message: ")
+    conn.sendall(reply.encode("utf-8"))
+    if reply == "bye" or reply == "quit":
+        print("Bye!")
+        break
 
 conn.close()
-socket.close()
+server.close()
