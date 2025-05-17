@@ -4,12 +4,21 @@
     <meta charset="UTF-8">
     <title>Choice</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        function redirectTo(role) {
+            if (role === 'server') {
+                window.location.href = "{{ url_for('server') }}";
+            } else if (role === 'client') {
+                window.location.href = "{{ url_for('client') }}";
+            }
+        }
+    </script>
 </head>
 <body>
     <h1>Please choose who you are:</h1>
     <div class="button-container">
-        <button class="server-button">I'm Server</button>
-        <button class="client-button">I'm Client</button>
+        <button class="server-button" onclick="redirectTo('server')">I'm Server</button>
+        <button class="client-button" onclick="redirectto('client')">I'm Client</button>
     </div>
 </body>
 </html>
