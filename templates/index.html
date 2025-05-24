@@ -2,23 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Choice</title>
+    <title>Chat</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <script>
-        function redirectTo(role) {
-            if (role === 'server') {
-                window.location.href = "{{ url_for('server') }}";
-            } else if (role === 'client') {
-                window.location.href = "{{ url_for('client') }}";
-            }
-        }
-    </script>
 </head>
 <body>
-    <h1>Please choose who you are:</h1>
-    <div class="button-container">
-        <button class="server-button" onclick="redirectTo('server')">I'm Server</button>
-        <button class="client-button" onclick="redirectto('client')">I'm Client</button>
-    </div>
+    <div>My address is: "{{ ip_address }}"</div>    
+    <h2>Send a Message</h2>
+    <form action="{{ url_for('send_message') }}" method="POST">
+        <label for="target_ip">Target IP Address:</label>
+        <input type="text" id="target_ip" name="target_ip" placeholder="Enter IP address" required>
+        <br><br>
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" placeholder="Enter your message" required></textarea>
+        <br><br>
+        <button type="submit">Send</button>
+    </form>
+
+
 </body>
 </html>
