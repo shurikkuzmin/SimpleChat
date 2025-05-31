@@ -8,7 +8,7 @@
 <body>
     <div>My address is: "{{ ip_address }}"</div>    
     <h2>Send a Message</h2>
-    <form action="{{ url_for('send_message') }}" method="POST">
+    <form action="{{ url_for('home') }}" method="POST">
         <label for="target_ip">Target IP Address:</label>
         <input type="text" id="target_ip" name="target_ip" placeholder="Enter IP address" required>
         <br><br>
@@ -18,5 +18,9 @@
         <button type="submit">Send</button>
     </form>
 
+    {% if response %}
+        <h2>Response:</h2>
+        <p>{{ response }}</p>        
+    {% endif %}
 </body>
 </html>
