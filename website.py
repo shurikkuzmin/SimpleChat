@@ -15,14 +15,8 @@ def home():
             print(request.form)
             target_ip = request.form.get("target_ip")
             target_message = request.form.get("target_message")
-            requests.post(f"http://{target_ip}/receive:5000", data={"message": target_message})
+            requests.post(f"http://{target_ip}:5000/receive", data={"message": target_message})
             print("Message sent to target IP:", target_ip)
-        else:
-            message = request.data.get("message")
-            if messages == None:
-                messages = message
-            else:
-                messages = messages + "\n" + message
    
     return render_template("index.html",ip_address=ip_address, messages=messages)
 
