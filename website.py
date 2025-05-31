@@ -1,28 +1,41 @@
 from flask import Flask, render_template, request, jsonify
 import socket
+import requests
 
 app = Flask(__name__)
 ip_address = "10.14.3.8"
-response = None
+messages = None
 
 @app.route("/", methods=["GET", "POST"])
 def home():
-    global response
+    global messages
     if request.method == "POST":
-        #target_ip = request.form.get("target_ip")
-        message = request.form.get("message")
-        response = response + "\n" + message
+        if request.form:
+            print("Received form data")
+            print(request.form)
+            target_ip = request.form.get("target_ip")
+            target_message = request.form.get("target_message")
+            requests.post(f"http://{target_ip}/receive:5000", data={"message": target_message})
+            print("Message sent to target IP:", target_ip)
+        else:
+            message = request.data.get("message")
+            if messages == None:
+                messages = message
+            else:
+                messages = messages + "\n" + message
    
-    return render_template("index.html",ip_address=ip_address, response=response)
+    return render_template("index.html",ip_address=ip_address, messages=messages)
 
-#@app.route("/send_message", methods=["POST"])
-#def send_message():
-#    target_ip = request.form.get("target_ip")
-#    message = request.form.get("message")
-    
-#    # For now, just return the data as a response
-#    return jsonify({"target_ip": target_ip, "message": message})
-
+@app.route("/receive", methods=["POST"])
+def receive():
+    global messages
+    message = request.data.get("message")
+    if messages is None:
+        messages = message
+    else:
+        messages += "\n" + message
+    print("Received message:", message)
+    return jsonify({"status": "success", "message": "Message received"}), 200
 
 if __name__ == "__main__":
-    app.run(host=ip_address, port=5000)
+    app.run(host=ip_address, port=5000, threaded=True)
